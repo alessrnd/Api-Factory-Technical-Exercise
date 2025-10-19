@@ -1,0 +1,922 @@
+{
+	"info": {
+		"_postman_id": "12fcb337-a5a3-48f3-bbb2-35d469789421",
+		"name": "Vaudoise Assurances - Technical Exercise API",
+		"description": "Complete collection to test the Spring Boot REST API\n\nCovered tests:\n- Client CRUD (Person & Company)\n- Contract CRUD\n- Filters and aggregations\n- Edge cases and errors",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31947899"
+	},
+	"item": [
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "1. Create Person Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Jean Dupont\",\n  \"email\": \"jean.dupont@example.com\",\n  \"phone\": \"+41791234567\",\n  \"birthdate\": \"1985-05-15\",\n  \"companyIdentifier\": null\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Company Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"COMPANY\",\n  \"name\": \"Tech Solutions SA\",\n  \"email\": \"contact@techsolutions.ch\",\n  \"phone\": \"+41223456789\",\n  \"birthdate\": null,\n  \"companyIdentifier\": \"tec-001\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get All Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Client By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clients/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Update Client (allowed fields)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Jean Dupont Updated\",\n  \"email\": \"jean.dupont.new@example.com\",\n  \"phone\": \"+41799999999\",\n  \"birthdate\": \"1985-05-15\",\n  \"companyIdentifier\": null\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Update Client - Try Change Birthdate",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Jean Dupont\",\n  \"email\": \"jean.dupont@example.com\",\n  \"phone\": \"+41791234567\",\n  \"birthdate\": \"2000-01-01\",\n  \"companyIdentifier\": null\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Delete Client",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clients/26",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get Non-Existent Client (404)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clients/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Create Client - Invalid Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Test User\",\n  \"email\": \"invalid-email\",\n  \"phone\": \"+41791234567\",\n  \"birthdate\": \"1985-05-15\",\n  \"companyIdentifier\": null\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10. Create Client - Invalid Phone",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"phone\": \"123\",\n  \"birthdate\": \"1985-05-15\",\n  \"companyIdentifier\": null\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11. Create Company - Invalid Identifier",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientType\": \"COMPANY\",\n  \"name\": \"Test Company\",\n  \"email\": \"test@company.com\",\n  \"phone\": \"+41223456789\",\n  \"birthdate\": null,\n  \"companyIdentifier\": \"INVALID\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contracts",
+			"item": [
+				{
+					"name": "1. Create Contract (with dates)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": 1,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": null,\n  \"costAmount\": 1500.00\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Contract (no startDate)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": 1,\n  \"startDate\": null,\n  \"endDate\": null,\n  \"costAmount\": 2500.50\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Contract (terminated)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": 2,\n  \"startDate\": \"2023-01-01\",\n  \"endDate\": \"2024-06-30\",\n  \"costAmount\": 3000.00\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Update Contract Cost Amount Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"costAmount\": 2000.00\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts/1/cost",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts",
+								"1",
+								"cost"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.  Update Cost - Negative Value Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"costAmount\": -100.00\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts/1/cost",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts",
+								"1",
+								"cost"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Active Contracts for Client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/contracts/client/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts",
+								"client",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Active Contracts - Filter updateDate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/contracts/client/1?updateDate=2024-10-01T00:00:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts",
+								"client",
+								"1"
+							],
+							"query": [
+								{
+									"key": "updateDate",
+									"value": "2024-10-01T00:00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get Total Cost Amount (PERFORMANT)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/contracts/client/1/total-cost",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts",
+								"client",
+								"1",
+								"total-cost"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Create Contract - Invalid Client (404)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": 9999,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": null,\n  \"costAmount\": 1500.00\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Create Contract - Invalid Cost",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": 1,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": null,\n  \"costAmount\": 0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Scenarios",
+			"item": [
+				{
+					"name": "Scenario 1: Create Client + Contracts",
+					"item": [
+						{
+							"name": "Step 1 - Create Client",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Sophie Martin\",\n  \"email\": \"sophie.martin@example.com\",\n  \"phone\": \"+41798765432\",\n  \"birthdate\": \"1990-08-22\",\n  \"companyIdentifier\": null\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/clients",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 2 - Read a client",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/clients/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 3 -  Update Client",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"clientType\": \"PERSON\",\n  \"name\": \"Jean Dupont Updated\",\n  \"email\": \"jean.dupont.new@example.com\",\n  \"phone\": \"+41799999999\",\n  \"birthdate\": \"1985-05-15\",\n  \"companyIdentifier\": null\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/clients/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 4 - Delete a client",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/clients/26",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"clients",
+										"26"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 5 - Create Contract (with dates)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"clientId\": 1,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": null,\n  \"costAmount\": 1500.00\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/contracts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 5 - Create Contract (no startDate)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"clientId\": 1,\n  \"startDate\": null,\n  \"endDate\": null,\n  \"costAmount\": 2500.50\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/contracts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 5 - Create Contract (terminated)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"clientId\": 2,\n  \"startDate\": \"2023-01-01\",\n  \"endDate\": \"2024-06-30\",\n  \"costAmount\": 3000.00\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/contracts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 6 - Update Cost - Negative Value",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"costAmount\": -100.00\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/contracts/1/cost",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts",
+										"1",
+										"cost"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 6 - Update Contract Cost Amount",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"costAmount\": 2000.00\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/contracts/2/cost",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts",
+										"2",
+										"cost"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 7 - Get Active Contracts for Client",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/contracts/client/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts",
+										"client",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 7 - Get Active Contracts - Filter updateDate",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/contracts/client/1?updateDate=2024-10-01T00:00:00",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts",
+										"client",
+										"1"
+									],
+									"query": [
+										{
+											"key": "updateDate",
+											"value": "2024-10-01T00:00:00"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 8 - Get Total Cost Amount (PERFORMANT)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/contracts/client/1/total-cost",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"contracts",
+										"client",
+										"1",
+										"total-cost"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
