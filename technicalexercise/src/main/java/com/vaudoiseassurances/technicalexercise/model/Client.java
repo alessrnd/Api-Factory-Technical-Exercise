@@ -53,4 +53,6 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ClientContract> contracts = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

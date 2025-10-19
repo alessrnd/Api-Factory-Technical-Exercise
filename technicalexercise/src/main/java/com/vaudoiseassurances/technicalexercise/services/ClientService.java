@@ -62,23 +62,25 @@ public class ClientService {
         return updatedClient;
     }
 
+    @Transactional
     public void deleteClient(Long id) {
-        log.info("Deleting client with id: {}", id);
+        log.info("Soft deleting client with id: {}", id);
         Client client = getClientById(id);
-        
         LocalDate today = LocalDate.now();
+
         List<ClientContract> activeContracts = contractRepository.findByClientIdAndEndDateIsNull(id);
-        
         activeContracts.forEach(contract -> {
             contract.setEndDate(today);
             log.debug("Setting end date for contract id: {} to {}", contract.getId(), today);
         });
-        
         contractRepository.saveAll(activeContracts);
-        
-        clientRepository.delete(client);
-        log.info("Client deleted: {}", id);
+
+        client.setDeleted(true);
+        clientRepository.save(client);
+
+        log.info("Client marked as deleted: {}", id);
     }
+
 
     private void validateClientType(ClientDTO dto) {
         if (dto.clientType() == ClientType.PERSON) {
