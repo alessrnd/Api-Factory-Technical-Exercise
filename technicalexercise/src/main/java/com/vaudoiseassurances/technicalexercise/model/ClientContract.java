@@ -20,9 +20,10 @@ public class ClientContract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     @NotNull(message = "Client is required")
+    @JsonIgnore
     private Client client;
     
     @Column(nullable = false)
@@ -30,9 +31,9 @@ public class ClientContract {
     
     private LocalDate endDate;
     
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 2)
     @NotNull(message = "Cost amount is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Cost must be greater than 0")
+    @DecimalMin(value = "0.01", message = "Cost must be greater than 0")
     private BigDecimal costAmount;
     
     @Column(nullable = false)
@@ -42,8 +43,9 @@ public class ClientContract {
     @PrePersist
     protected void onCreate() {
         this.updateDate = LocalDateTime.now();
-        this.startDate = LocalDate.now();
-        this.endDate= null;
+        if (this.startDate == null) {
+            this.startDate = LocalDate.now();
+        }
     }
     
     @PreUpdate

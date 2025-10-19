@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.lang.Contract;
-
 import com.vaudoiseassurances.technicalexercise.enums.ClientType;
 
 
@@ -21,7 +19,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Client {
     
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -52,6 +50,9 @@ public class Client {
     @Column(updatable = false)
     private String companyIdentifier;
     
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ClientContract> contracts = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 }
