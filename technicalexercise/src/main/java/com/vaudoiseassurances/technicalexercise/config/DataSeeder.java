@@ -132,7 +132,6 @@ public class DataSeeder implements CommandLineRunner {
         ClientContract contract = new ClientContract();
         contract.setClient(client);
         
-        // Date de début aléatoire dans les 3 dernières années
         LocalDate startDate = faker.date()
             .past(1095, TimeUnit.DAYS)
             .toInstant()
@@ -141,11 +140,9 @@ public class DataSeeder implements CommandLineRunner {
         
         contract.setStartDate(startDate);
         
-        // Contrat actif = pas de date de fin
         if (isActive) {
             contract.setEndDate(null);
         } else {
-            // Contrat terminé = date de fin entre startDate et aujourd'hui
             LocalDate endDate = startDate.plusYears(faker.random().nextInt(1, 3));
             if (endDate.isAfter(LocalDate.now())) {
                 endDate = LocalDate.now().minusDays(faker.random().nextInt(1, 365));
@@ -153,13 +150,10 @@ public class DataSeeder implements CommandLineRunner {
             contract.setEndDate(endDate);
         }
         
-        // Montant basé sur le type de client
         BigDecimal costAmount = switch (client.getClientType()) {
             case PERSON -> 
-                // Particuliers : 500 à 3000 CHF
                 BigDecimal.valueOf(faker.random().nextInt(500, 3000));
             case COMPANY -> 
-                // Entreprises : 5000 à 30000 CHF
                 BigDecimal.valueOf(faker.random().nextInt(5000, 30000));
         };
         
@@ -203,7 +197,7 @@ public class DataSeeder implements CommandLineRunner {
             .count();
         
         log.info("========================================");
-        log.info("📊 SEEDING SUMMARY");
+        log.info("SEEDING SUMMARY");
         log.info("========================================");
         log.info("Total Clients: {}", totalClients);
         log.info("  - Individual: {}", individualClients);
