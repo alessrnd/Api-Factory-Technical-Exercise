@@ -115,7 +115,6 @@ public class DataSeeder implements CommandLineRunner {
             );
             
             for (int i = 0; i < contractCount; i++) {
-                // Le premier contrat est toujours actif (70% pour les suivants)
                 boolean isActive = (i == 0) || (faker.random().nextInt(100) < 70);
                 ClientContract contract = generateContract(client, isActive);
                 contracts.add(contract);
